@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    input[type="text"] {
+      width: 80%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      border: 2px solid gray;
+      border-radius: 4px;
+      float: left;
+    }
+    input[type="button"] {
+      width: 20%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      border: 2px solid gray;
+      border-radius: 4px;
+      background-color: white;
+      color: black;
+      border-radius: 4px;
+      float: right;
+    }
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow: auto;
+      height: 100vh;
+      background-color: white;
+    }
+    li {
+      padding: 10px;
+      border-bottom: 1px solid gray;
+      background-color: lightgray;
+    }
+  </style>
+</head>
+<body>
+<h1 id="received-message"> </h1>
+<input type="text" id="inputbox">
+<input type="button" value="Enter" onclick="addToList()">
+<input type="button" value="Speak" id="speak-button">
+<ul id="list">
+</ul>
+<script>
+  const speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new speechRecognition();
+  recognition.lang = 'ja-JP';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+  const speakButton = document.getElementById("speak-button");
+  speakButton.addEventListener("click", () => {
+    recognition.start();
+  });
+
+  recognition.addEventListener("result", event => {
+    const inputValue = event.results[0][0].transcript;
+    document.getElementById("inputbox").value = inputValue;
+  });
+  var s = " - ";
+  function updateReceivedMessage() {
+    fetch("http://localhost:8080/hi")
+            .then(response => response.text())
+            .then(text => {
+              let receivedMessage = text.split("-")[0];
+              s = text;
+              document.querySelector("#received-message").textContent = receivedMessage;
+            });
+  }
+  updateReceivedMessage();
+
+  function addToList() {
+    var inputValue = document.getElementById("inputbox").value;
+    var referenceValue = s.split("-")[1];
+    var node = document.createElement("LI");
+    var textnode;
+    if (inputValue === referenceValue) {
+      textnode = document.createTextNode(s + " (correct)");
+    } else {
+      textnode = document.createTextNode(s + " (incorrect)");
+    }
+    node.appendChild(textnode);
+    document.getElementById("list").appendChild(node);
+    document.getElementById("inputbox").value = ""; // 입력 창 내용 지우기
+    updateReceivedMessage();
+  }
+
+  const synth = window.speechSynthesis;
+
+  function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ja-JP';
+    synth.speak(utterance);
+  }
+
+  // Speak the content of an element when it is clicked
+  document.querySelector('#list').addEventListener('click', event => {
+    if (event.target.nodeName === 'LI') {
+      const content = event.target.textContent.split("-")[1].split("(")[0];
+      speak(content);
+    }
+  });
+</script>
+</body>
+</html>
