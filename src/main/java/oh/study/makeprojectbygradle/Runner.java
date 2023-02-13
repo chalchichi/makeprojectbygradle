@@ -1,14 +1,20 @@
 package oh.study.makeprojectbygradle;
 
-import org.springframework.stereotype.Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.Random;
 
-@Service
-public class TestServcie {
-    public String Service(String a)
-    {
+@Component
+public class Runner implements ApplicationRunner {
+
+    @Autowired
+    WordsRepository wordsRepository;
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
         HashMap<String, String> dictionary = new HashMap<>();
 
         dictionary.put("사과", "りんご");
@@ -52,12 +58,13 @@ public class TestServcie {
         dictionary.put("소리", "音");
         dictionary.put("말", "言葉");
 
-        Random random = new Random();
-        Object[] keys = dictionary.keySet().toArray();
-        String randomKey = (String)keys[random.nextInt(keys.length)];
-        String randomValue = dictionary.get(randomKey);
-        String randomKeyValue = randomKey + "-" + randomValue;
-
-        return randomKeyValue;
+        for (String key:dictionary.keySet())
+        {
+            Words word = new Words();
+            word.setKorean(key);
+            word.setJapaness(dictionary.get(key).toString());
+            wordsRepository.save(word);
+        }
+        wordsRepository.flush();
     }
 }

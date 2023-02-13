@@ -65,7 +65,7 @@
   });
   var s = " - ";
   function updateReceivedMessage() {
-    fetch("http://192.168.0.6:8080/hi")
+    fetch("http://192.168.0.6:8080/words")
             .then(response => response.text())
             .then(text => {
               let receivedMessage = text.split("-")[0];

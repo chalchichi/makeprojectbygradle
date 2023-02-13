@@ -5,17 +5,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class Controller1 {
-    TestServcie service;
-    public Controller1(TestServcie service)
+public class MainController {
+    MakeWord service;
+    public MainController(MakeWord service)
     {
         this.service = service;
     }
 
-    @GetMapping("/hi")
+    @GetMapping("/words")
     public String returnrequest()
     {
-        return service.Service("hi");
+        String res = service.Service();
+        return res;
     }
 
 }
