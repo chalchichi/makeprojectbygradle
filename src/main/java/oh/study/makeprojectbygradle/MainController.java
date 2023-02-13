@@ -15,8 +15,7 @@ public class MainController {
     @GetMapping("/words")
     public String returnrequest()
     {
-        String res = service.Service();
-        return res;
+        return service.Service();
     }
 
 }

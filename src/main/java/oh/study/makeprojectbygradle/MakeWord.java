@@ -14,12 +14,17 @@ public class MakeWord {
     {
         this.wordsRepository = wordsRepository;
     }
+
+    public int getrnum()
+    {
+        int max =  wordsRepository.getMaxId();
+        Random random = new Random();
+        int rnum = random.nextInt(max)+1;
+        return rnum;
+    }
     public String Service()
     {
-
-        int max =  wordsRepository.getMaxId()+1;
-        Random random = new Random();
-        int rnum = random.nextInt(max);
+        int rnum = getrnum();
         Optional<Words> words = wordsRepository.findById(rnum);
         String randomKey = words.orElseThrow().getKorean();
         String randomValue = words.orElseThrow().getJapaness();
