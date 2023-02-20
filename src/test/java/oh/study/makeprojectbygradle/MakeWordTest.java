@@ -44,4 +44,15 @@ class MakeWordTest {
         String res = makeWord.Service();
         assertEquals("친구-友達", res);
     }
+
+    @Test
+    @DisplayName("String 정상 반환2")
+    public void testService3() {
+        Words words = Words.builder().id(3).korean("사과").japaness("りんご").build();
+
+        Mockito.doAnswer(invocation -> 3).when(wordsRepository).getMaxId();
+        Mockito.doAnswer(invocation -> Optional.of(words)).when(wordsRepository).findById(3);
+        String res = makeWord.Service();
+        assertEquals("친구-友達", res);
+    }
 }
