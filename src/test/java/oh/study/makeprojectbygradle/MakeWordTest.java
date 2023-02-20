@@ -25,13 +25,23 @@ class MakeWordTest {
 
     @Test
     @DisplayName("String 정상 반환")
-    public void testService()
-    {
+    public void testService() {
         Words words = Words.builder().id(1).korean("사과").japaness("りんご").build();
 
         Mockito.doAnswer(invocation -> 1).when(wordsRepository).getMaxId();
         Mockito.doAnswer(invocation -> Optional.of(words)).when(wordsRepository).findById(1);
         String res = makeWord.Service();
-        assertEquals("사과-りんご",res);
+        assertEquals("사과-りんご", res);
+    }
+
+    @Test
+    @DisplayName("String 정상 반환2")
+    public void testService2() {
+        Words words = Words.builder().id(1).korean("사과").japaness("りんご").build();
+
+        Mockito.doAnswer(invocation -> 2).when(wordsRepository).getMaxId();
+        Mockito.doAnswer(invocation -> Optional.of(words)).when(wordsRepository).findById(2);
+        String res = makeWord.Service();
+        assertEquals("친구-友達", res);
     }
 }
