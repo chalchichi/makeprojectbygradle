@@ -37,7 +37,7 @@ class MakeWordTest {
     @Test
     @DisplayName("String 정상 반환2")
     public void testService2() {
-        Words words = Words.builder().id(1).korean("사과").japaness("りんご").build();
+        Words words = Words.builder().id(2).korean("사과").japaness("りんご").build();
 
         Mockito.doAnswer(invocation -> 2).when(wordsRepository).getMaxId();
         Mockito.doAnswer(invocation -> Optional.of(words)).when(wordsRepository).findById(2);
