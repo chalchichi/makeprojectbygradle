@@ -46,7 +46,7 @@ class MakeWordTest {
     }
 
     @Test
-    @DisplayName("String 정상 반환3")
+    @DisplayName("String 정상 반환4")
     public void testService3() {
         Words words = Words.builder().id(3).korean("사과").japaness("りんご").build();
 
